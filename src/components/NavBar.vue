@@ -29,6 +29,7 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/stores/UserStore'
 import { Roles } from '@/types'
+import { ElNotification } from 'element-plus'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -57,6 +58,11 @@ const isAdmin = (): boolean => {
 const logout = (): void => {
   userStore.$reset()
   router.push({ name: 'Home' })
+  activeIndex.value = '1'
+  ElNotification({
+    type: 'success',
+    message: 'See you again',
+  })
 }
 </script>
 
@@ -68,5 +74,9 @@ const logout = (): void => {
 .el-menu {
   align-items: center;
   justify-content: center;
+}
+
+.el-menu-item a {
+  text-decoration: none;
 }
 </style>

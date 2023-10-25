@@ -7,18 +7,18 @@ export const useUserStore = defineStore('user', () => {
   const isLogin: Ref<boolean> = ref(false)
   const loginUser: Ref<SmileUserType | null> = ref(null)
   const userList: Ref<Array<SmileUserType>> = ref([])
-  const _token: Ref<string | null> = ref(localStorage.getItem('token'))
+  const token: Ref<string | null> = ref(localStorage.getItem('token'))
 
   function $reset() {
     isLogin.value = false
     loginUser.value = null
     userList.value = []
-    _token.value = null
+    token.value = null
     localStorage.removeItem('token')
   }
 
   async function loadLocalUser() {
-    if (!_token.value) return
+    if (!token.value) return
     await userService
       .current_user()
       .then((data) => {
@@ -30,5 +30,19 @@ export const useUserStore = defineStore('user', () => {
       })
   }
 
-  return { isLogin, loginUser, userList, $reset, loadLocalUser }
+  async function getUsers() {
+    await userService
+      .user_list()
+      .then((data) => (userList.value = data.data as SmileUserType[]))
+  }
+
+  return {
+    token,
+    isLogin,
+    loginUser,
+    userList,
+    $reset,
+    loadLocalUser,
+    getUsers,
+  }
 })

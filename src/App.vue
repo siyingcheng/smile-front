@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-
-const sendMessage = () => {
-  ElMessage.success('Element-plus component import as on-demand success')
-}
+import { RouterView } from 'vue-router'
 </script>
 
 <template>

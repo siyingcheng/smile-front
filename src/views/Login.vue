@@ -1,21 +1,29 @@
 <template>
-  <div>
-    <h1>Login</h1>
-    <el-form :model="loginForm" label-width="120px">
-      <el-form-item label="Username">
-        <el-input
-          v-model="loginForm.username"
-          placeholder="username or email"
-        />
-      </el-form-item>
-      <el-form-item label="Password">
-        <el-input v-model="loginForm.password" placeholder="password" />
-      </el-form-item>
+  <div style="height: 100%">
+    <el-row class="row-bg" justify="center" align="middle" style="height: 100%">
+      <el-col :xs="20" :sm="12" :md="8" :lg="6">
+        <div class="grid-content">
+          <div class="login-header">
+            <h1 class="">Login</h1>
+          </div>
+          <el-form :model="loginForm" label-width="120px">
+            <el-form-item label="Username">
+              <el-input
+                v-model="loginForm.username"
+                placeholder="username or email"
+              />
+            </el-form-item>
+            <el-form-item label="Password">
+              <el-input v-model="loginForm.password" placeholder="password" />
+            </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="onLogin">Login</el-button>
-      </el-form-item>
-    </el-form>
+            <el-form-item>
+              <el-button type="primary" @click="onLogin">Login</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -49,6 +57,7 @@ const onLogin = async () => {
       // save to store
       userStore.isLogin = true
       userStore.loginUser = user
+      userStore.token = token
       // notification
       ElNotification({
         title: 'Welecom',
@@ -58,12 +67,11 @@ const onLogin = async () => {
       // auto navigate to Home
       router.push({ name: 'Home' })
     })
-    .catch((error) => {
-      ElNotification({
-        title: 'Error',
-        type: 'error',
-        message: error.response?.data?.message || 'Login Error',
-      })
-    })
 }
 </script>
+
+<style scoped>
+.login-header {
+  text-align: center;
+}
+</style>

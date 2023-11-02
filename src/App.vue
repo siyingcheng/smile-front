@@ -9,7 +9,7 @@ import NavBar from '@/components/NavBar.vue'
   </div>
 </template>
 
-<style scoped>
+<style>
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -27,7 +27,9 @@ import NavBar from '@/components/NavBar.vue'
 }
 
 body {
-  padding: 0 0;
-  margin: 0 0;
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
 }
 </style>

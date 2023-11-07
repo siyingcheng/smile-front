@@ -1,82 +1,91 @@
-<template>
-  <el-menu
-    :default-active="activeIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    :ellipsis="false"
-  >
-    <el-menu-item index="0">
-      <router-link to="/">
-        <img src="@/assets/vue.svg" alt="Logo" />
-      </router-link>
-    </el-menu-item>
-    <el-menu-item index="1">
-      <router-link to="/">Home</router-link>
-    </el-menu-item>
-    <el-menu-item index="2" v-show="userStore.isLogin && isAdmin()">
-      <router-link to="/users">User Management</router-link>
-    </el-menu-item>
-    <div class="flex-grow" />
-    <el-menu-item index="3" v-if="userStore.isLogin">
-      <router-link to="/" @click="logout">Logout</router-link>
-    </el-menu-item>
-    <el-menu-item index="3" v-else>
-      <router-link to="/login">Login</router-link>
-    </el-menu-item>
-  </el-menu>
-</template>
-
-<script lang="ts" setup>
+<script async setup lang="ts">
 import { useUserStore } from '@/stores/UserStore'
 import { Roles } from '@/types'
-import { ElNotification } from 'element-plus'
-import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
-const activeIndex = ref('1')
-
 const router = useRouter()
+
+// load user from local
+userStore.getCurrentUser()
+
+const doLogout = () => {
+  ElNotification({
+    type: 'success',
+    message: 'See you again!',
+  })
+  userStore.$reset()
+  localStorage.removeItem('item')
+  router.push('/')
+}
+
+const activeIndex = ref('1')
+const handleSelect = (key: string, keyPath: string[]) => {
+  // console.log(key, keyPath)
+  activeIndex.value = key
+}
 
 watch(
   () => router.currentRoute.value.path,
   (newPath) => {
-    if (newPath === '/login' || newPath === '/logout') {
-      activeIndex.value = '3'
-    } else if (newPath.startsWith('/users')) {
-      activeIndex.value = '2'
-    } else {
-      activeIndex.value = '1'
-    }
-  }
+    // console.log(newPath)
+    activeIndex.value = newPath
+  },
 )
-
-const isAdmin = (): boolean => {
-  return userStore.loginUser?.roles?.includes(Roles.ROLE_ADMIN) || false
-}
-
-const logout = (): void => {
-  userStore.$reset()
-  router.push({ name: 'Home' })
-  activeIndex.value = '1'
-  ElNotification({
-    type: 'success',
-    message: 'See you again',
-  })
-}
 </script>
 
-<style>
+<template>
+  <el-header>
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      :ellipsis="false"
+      @select="handleSelect"
+      :router="true"
+    >
+      <el-menu-item index="">
+        <img style="width: 45px" src="@/assets/logo.svg" alt="Logo" />
+      </el-menu-item>
+      <el-menu-item index="/">
+        <el-icon><IEpHomeFilled /></el-icon>
+        Home
+      </el-menu-item>
+      <el-sub-menu
+        index="/management"
+        v-show="userStore.loginUser?.roles.includes(Roles.ROLE_ADMIN)"
+      >
+        <template #title>
+          <el-icon><IEpManagement /></el-icon>
+          Management
+        </template>
+        <el-menu-item index="/management/users">
+          <el-icon><IEpUser /></el-icon>
+          User Management
+        </el-menu-item>
+      </el-sub-menu>
+      <div class="flex-grow" />
+      <el-menu-item>
+        <template v-if="userStore.isLogin">
+          <el-sub-menu index="/user">
+            <template #title>{{
+              userStore.loginUser?.nickname || userStore.loginUser?.username
+            }}</template>
+            <el-menu-item index="/user/logout" @click="doLogout">
+              <el-icon><IEpSwitchButton /></el-icon>
+              Logout
+            </el-menu-item>
+          </el-sub-menu>
+        </template>
+        <template v-else>
+          <el-menu-item index="/login">Login</el-menu-item>
+        </template>
+      </el-menu-item>
+    </el-menu>
+  </el-header>
+</template>
+
+<style lang="scss" scoped>
 .flex-grow {
   flex-grow: 1;
-}
-
-.el-menu {
-  align-items: center;
-  justify-content: center;
-}
-
-.el-menu-item a {
-  text-decoration: none;
 }
 </style>

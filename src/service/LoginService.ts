@@ -1,10 +1,10 @@
-import apiClient from '@/services/HttpCommon.ts'
+import apiClient from '@/service/HttpCommon'
 import { Buffer } from 'buffer/'
 
 class LoginService {
   login(username: string, password: string): Promise<any> {
     let authToken: string = Buffer.from(`${username}:${password}`).toString(
-      'base64'
+      'base64',
     )
     return apiClient.post(
       '/login',
@@ -13,7 +13,7 @@ class LoginService {
         headers: {
           Authorization: `Basic ${authToken}`,
         },
-      }
+      },
     )
   }
 }

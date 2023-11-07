@@ -1,48 +1,55 @@
-import userService from '@/services/UserService'
-import { SmileUserType } from '@/types'
+import userService from '@/service/UserService'
+import type { SmileUserType } from '@/types'
 import { defineStore } from 'pinia'
-import { Ref, ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
-  const isLogin: Ref<boolean> = ref(false)
-  const loginUser: Ref<SmileUserType | null> = ref(null)
-  const userList: Ref<Array<SmileUserType>> = ref([])
-  const token: Ref<string | null> = ref(localStorage.getItem('token'))
+  const isLogin = ref(false)
+  const loginUser = ref<SmileUserType | null>(null)
+  const token = ref<string | null>(null)
+  const userList = ref<SmileUserType[]>([])
 
-  function $reset() {
-    isLogin.value = false
-    loginUser.value = null
-    userList.value = []
-    token.value = null
-    localStorage.removeItem('token')
-  }
-
-  async function loadLocalUser() {
+  const getCurrentUser = async () => {
+    token.value = localStorage.getItem('token')
     if (!token.value) return
     await userService
-      .current_user()
-      .then((data) => {
+      .currentUser()
+      .then((response) => {
         isLogin.value = true
-        loginUser.value = data.data as SmileUserType
+        loginUser.value = response.data as SmileUserType
       })
       .catch(() => {
+        localStorage.removeItem('token')
         $reset()
       })
   }
 
-  async function getUsers() {
+  const getUserList = async () => {
     await userService
-      .user_list()
-      .then((data) => (userList.value = data.data as SmileUserType[]))
+      .userList()
+      .then((response) => {
+        userList.value = response.data as SmileUserType[]
+      })
+      .catch(() => (userList.value = []))
+  }
+
+  const createUser = async (newUser: SmileUserType) => {
+    return await userService.createUser(newUser).then(() => getUserList())
+  }
+
+  const $reset = () => {
+    isLogin.value = false
+    loginUser.value = null
+    token.value = null
   }
 
   return {
-    token,
     isLogin,
     loginUser,
+    token,
     userList,
     $reset,
-    loadLocalUser,
-    getUsers,
+    getCurrentUser,
+    getUserList,
+    createUser,
   }
 })

@@ -10,8 +10,9 @@ const client = axios.create({
 
 client.interceptors.request.use(
   (config) => {
+    const userStore = useUserStore()
     if (config.url !== '/login') {
-      let token = useUserStore().token || localStorage.getItem('token')
+      let token = userStore.token || localStorage.getItem('token')
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
@@ -24,6 +25,12 @@ client.interceptors.response.use(
     return response.data
   },
   (error) => {
+    if (error.response.status === 401) {
+      localStorage.removeItem('token')
+      const route = useRoute()
+      useRouter().push(`/login?redirect=${route.fullPath}`)
+      window.location.reload()
+    }
     return Promise.reject(error)
   },
 )

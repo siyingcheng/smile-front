@@ -6,6 +6,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 const NotFoundPage = () => import('@/components/NotFoundPage.vue')
 const LoginView = () => import('@/views/login/LoginView.vue')
 const UserManageView = () => import('@/views/management/UserManageView.vue')
+const RegisterView = () => import('@/views/login/RegisterView.vue')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -17,6 +18,11 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     name: 'Login',
     component: LoginView,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterView,
   },
   {
     path: '/management',

@@ -32,8 +32,10 @@ export const useUserStore = defineStore('user', () => {
       .catch(() => (userList.value = []))
   }
 
-  const createUser = async (newUser: SmileUserType) => {
-    return await userService.createUser(newUser).then(() => getUserList())
+  const createUser = async (newUser: SmileUserType, isRegister = false) => {
+    return isRegister
+      ? await userService.registerUser(newUser)
+      : await userService.createUser(newUser).then(() => getUserList())
   }
 
   const deleteUser = async (id: string | number) => {

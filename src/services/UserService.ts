@@ -19,6 +19,19 @@ class UserService {
     return apiClient.post(USERS_URI, newUser)
   }
 
+  registerUser(
+    newUser: SmileUserType,
+  ): Promise<SmileResponseType<SmileUserType>> {
+    // register request cannot carry header Authorization, otherwise 401
+    const client = axios.create({
+      baseURL: import.meta.env.VITE_APP_BASE_URL,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return client.post(USERS_URI, newUser)
+  }
+
   deleteUser(id: string | number): Promise<SmileResponseType<any>> {
     return apiClient.delete(`${USERS_URI}/${id}`, {})
   }

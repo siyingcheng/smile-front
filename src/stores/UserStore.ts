@@ -36,6 +36,14 @@ export const useUserStore = defineStore('user', () => {
     return await userService.createUser(newUser).then(() => getUserList())
   }
 
+  const deleteUser = async (id: string | number) => {
+    return await userService.deleteUser(id).then(() => getUserList())
+  }
+
+  const updateUser = async (id: string | number, user: SmileUserType) => {
+    return await userService.updateUser(id, user).then(() => getUserList())
+  }
+
   const $reset = () => {
     isLogin.value = false
     loginUser.value = null
@@ -51,5 +59,7 @@ export const useUserStore = defineStore('user', () => {
     getCurrentUser,
     getUserList,
     createUser,
+    deleteUser,
+    updateUser,
   }
 })

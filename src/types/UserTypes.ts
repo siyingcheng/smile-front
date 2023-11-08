@@ -4,6 +4,7 @@ export type SmileUserType = {
   email: string
   nickname?: string
   roles: string
+  enabled: boolean
 }
 
 export type NewSmileUserType = {

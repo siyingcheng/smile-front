@@ -89,41 +89,46 @@ const doLogin = async () => {
 
 <template>
   <div class="login">
-    <el-form
-      ref="loginFormRef"
-      :model="loginForm"
-      :rules="loginRules"
-      label-width="120px"
-      label-position="top"
-    >
-      <h2>Login</h2>
-      <el-form-item label="Username/Email" prop="username">
-        <el-input
-          v-model="loginForm.username"
-          placeholder="Username or Email"
-        />
-      </el-form-item>
-      <el-form-item label="Password" prop="password">
-        <el-input
-          type="password"
-          v-model="loginForm.password"
-          placeholder="Password"
-        />
-      </el-form-item>
+    <el-card>
+      <el-form
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginRules"
+        label-width="120px"
+        label-position="top"
+      >
+        <h2>Login</h2>
+        <el-form-item label="Username or email address" prop="username">
+          <el-input
+            v-model="loginForm.username"
+            placeholder="Username or Email"
+          />
+        </el-form-item>
+        <el-form-item label="Password" prop="password">
+          <el-input
+            type="password"
+            v-model="loginForm.password"
+            placeholder="Password"
+          />
+        </el-form-item>
 
-      <div class="login-btn-group">
-        <el-button
-          class="btn-login"
-          type="primary"
-          @click="doLogin"
-          :disabled="isLoginDisabled"
-          :loading="isLogging"
-        >
-          Login
-        </el-button>
-        <el-button @click="redirectBack" class="btn-cancel">Cancel</el-button>
-      </div>
-    </el-form>
+        <div class="login-btn-group">
+          <el-button
+            class="btn-login"
+            type="primary"
+            @click="doLogin"
+            :disabled="isLoginDisabled"
+            :loading="isLogging"
+          >
+            Login
+          </el-button>
+        </div>
+
+        <div class="register">
+          <p>New to here? <a href="/register">Create an account</a></p>
+        </div>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
@@ -134,15 +139,16 @@ const doLogin = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   .el-form {
-    width: 300px;
+    width: 274px;
     background-color: #fff;
-    padding: 3em;
+    padding: 2em;
     border-radius: 1em;
 
     .el-form-item {
-      margin-top: 1em;
+      margin-top: 1.5em;
     }
   }
 }
@@ -153,8 +159,18 @@ const doLogin = async () => {
   justify-content: space-around;
 
   .el-button {
-    width: 48%;
+    width: 100%;
+  }
+}
+
+.register {
+  margin-top: 1em;
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    margin-left: 0.5em;
+    cursor: pointer;
   }
 }
 </style>
-@/services/LoginService.js

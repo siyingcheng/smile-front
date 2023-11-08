@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import loginService from '@/service/LoginService.js'
+import loginService from '@/services/LoginService.js'
 import { useUserStore } from '@/stores/UserStore.js'
 import type { LoginDataType, SmileResponseType } from '@/types'
 import { type FormInstance, type FormRules } from 'element-plus'
@@ -157,3 +157,4 @@ const doLogin = async () => {
   }
 }
 </style>
+@/services/LoginService.js

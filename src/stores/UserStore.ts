@@ -1,4 +1,4 @@
-import userService from '@/service/UserService'
+import userService from '@/services/UserService'
 import type { SmileUserType } from '@/types'
 import { defineStore } from 'pinia'
 

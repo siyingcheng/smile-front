@@ -1,4 +1,4 @@
-import apiClient from '@/service/HttpCommon'
+import apiClient from '@/services/HttpCommon'
 import { Buffer } from 'buffer/'
 
 class LoginService {

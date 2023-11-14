@@ -70,6 +70,11 @@ watch(
             <template #title>{{
               userStore.loginUser?.nickname || userStore.loginUser?.username
             }}</template>
+            <el-menu-item index="/user/address">
+              <el-icon><IEpSetting /></el-icon>
+              Address Management
+            </el-menu-item>
+            <el-divider />
             <el-menu-item index="/user/logout" @click="doLogout">
               <el-icon><IEpSwitchButton /></el-icon>
               Logout

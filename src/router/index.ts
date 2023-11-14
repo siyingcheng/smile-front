@@ -7,6 +7,7 @@ const NotFoundPage = () => import('@/components/NotFoundPage.vue')
 const LoginView = () => import('@/views/login/LoginView.vue')
 const UserManageView = () => import('@/views/management/UserManageView.vue')
 const RegisterView = () => import('@/views/login/RegisterView.vue')
+const AddressManageView = () => import('@/views/users/AddressManageView.vue')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -23,6 +24,20 @@ const routes: RouteRecordRaw[] = [
     path: '/register',
     name: 'Register',
     component: RegisterView,
+  },
+  {
+    path: '/user',
+    name: 'UserSettings',
+    meta: {
+      requireAuth: true,
+    },
+    children: [
+      {
+        path: '/user/address',
+        name: 'AddressManage',
+        component: AddressManageView,
+      },
+    ],
   },
   {
     path: '/management',

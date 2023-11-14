@@ -11,3 +11,10 @@ export type NewSmileUserType = {
   password: string
   confirmPassword: string
 } & SmileUserType
+
+export type UserAddressType = {
+  id?: number
+  fullAddress: string
+  phone: string
+  isDefault: boolean
+}

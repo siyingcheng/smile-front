@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/UserStore'
-import { Roles, type NewSmileUserType, type SmileUserType } from '@/types'
+import {
+  Roles,
+  type NewSmileUserType,
+  type SmileUserType,
+  type IdType,
+} from '@/types'
 import { type FormInstance, type FormRules } from 'element-plus'
 import { InfoFilled } from '@element-plus/icons-vue'
 
@@ -36,7 +41,7 @@ const openEditModal = (data: SmileUserType) => {
   editUserModalVisible.value = true
 }
 
-const confirmDelete = async (id: string | number) => {
+const confirmDelete = async (id: IdType) => {
   await userStore
     .deleteUser(id)
     .then(() => {

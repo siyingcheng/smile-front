@@ -1,5 +1,10 @@
 import apiClient from '@/services/HttpCommon'
-import type { SmileResponseType, SmileUserType } from '@/types'
+import type {
+  IdType,
+  SmileResponseType,
+  SmileUserType,
+  UserAddressType,
+} from '@/types'
 
 const USERS_URI = '/users'
 const CURRENT_USER_URI = `${USERS_URI}/current_user`
@@ -32,15 +37,44 @@ class UserService {
     return client.post(USERS_URI, newUser)
   }
 
-  deleteUser(id: string | number): Promise<SmileResponseType<any>> {
+  deleteUser(id: IdType): Promise<SmileResponseType<any>> {
     return apiClient.delete(`${USERS_URI}/${id}`, {})
   }
 
   updateUser(
-    id: string | Number,
+    id: IdType,
     user: SmileUserType,
   ): Promise<SmileResponseType<SmileUserType>> {
     return apiClient.put(`${USERS_URI}/${id}`, user)
+  }
+
+  getAddress(addressId: IdType): Promise<SmileResponseType<UserAddressType>> {
+    return apiClient.get(`${USERS_URI}/address/${addressId}`)
+  }
+
+  getAddressList(
+    userId: IdType,
+  ): Promise<SmileResponseType<UserAddressType[]>> {
+    return apiClient.get(`${USERS_URI}/${userId}/address`)
+  }
+
+  createAddress(
+    userId: IdType,
+    address: UserAddressType,
+  ): Promise<SmileResponseType<SmileUserType>> {
+    return apiClient.post(`${USERS_URI}/${userId}/address`, address)
+  }
+
+  deleteAddress(addressId: IdType): Promise<SmileResponseType<any>> {
+    return apiClient.delete(`${USERS_URI}/address/${addressId}`)
+  }
+
+  updateAddress(
+    userId: IdType,
+    addressId: IdType,
+    address: UserAddressType,
+  ): Promise<SmileResponseType<SmileUserType>> {
+    return apiClient.put(`${USERS_URI}/${userId}/address/${addressId}`, address)
   }
 }
 

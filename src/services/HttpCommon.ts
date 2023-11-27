@@ -1,3 +1,4 @@
+import router from '@/router'
 import { useUserStore } from '@/stores/UserStore'
 import axios from 'axios'
 
@@ -25,10 +26,10 @@ client.interceptors.response.use(
     return response.data
   },
   (error) => {
-    if (error.response.status === 401) {
+    let path = router.currentRoute.value.fullPath
+    if (error.response.status === 401 && path !== '/login') {
       localStorage.removeItem('token')
-      const route = useRoute()
-      useRouter().push(`/login?redirect=${route.fullPath}`)
+      router.push(`/login?redirect=${path}`)
       window.location.reload()
     }
     return Promise.reject(error)
